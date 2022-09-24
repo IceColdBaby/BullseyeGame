@@ -7,40 +7,116 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View
 {
+    
+   
+    
     @State var alertIsVisible = false
     @State var sliderValue  = 50.0
     @State var targetValue  = Int.random(in: 1...100)
     @State var Score = 0
     @State var Round = 1
     
+    struct LabelStyle: ViewModifier
+    {
+        func body(content: Content) -> some View
+        {
+            return content
+                .foregroundColor(Color.white)
+                .modifier(Shadow())
+                .font(Font.custom("Arial Rounded MT Bold", size: 18))
+        }
+        
+        
+    }
+    
+    struct ValueStyle: ViewModifier
+    {
+        func body(content: Content) -> some View
+        {
+            return content
+                .foregroundColor(Color.yellow)
+                .modifier(Shadow())
+                .font(Font.custom("Arial Rounded MT Bold", size: 24))
+        }
+        
+        
+    }
+    
+    struct ButtonLargeTextStyle: ViewModifier
+    {
+        func body(content: Content) -> some View
+        {
+            return content
+                .foregroundColor(Color.black)
+                .font(Font.custom("Arial Rounded MT Bold", size: 18))
+        }
+    }
+    struct ButtonSmallTextStyle: ViewModifier
+    {
+        func body(content: Content) -> some View
+        {
+            return content
+                .foregroundColor(Color.black)
+                .font(Font.custom("Arial Rounded MT Bold", size: 12))
+        }
+    }
+    
+    
+    struct Shadow: ViewModifier
+    {
+        func body(content: Content) -> some View
+        {
+            return content
+                .shadow(color: Color.black,radius: /*@START_MENU_TOKEN@*/5/*@END_MENU_TOKEN@*/, x:2, y:2)
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     var body: some View
     {
         
+       
+        
         VStack
         {
+            
             Spacer()
+            
             HStack
             {
                 Text("Put the bullseye as close as you can to:")
-                Text("\(targetValue)")
+                    .modifier(LabelStyle())
+                  
+                
+                Text("\(targetValue)").modifier(ValueStyle())
+                
             }
             Spacer()
             
             HStack
             {
-                Text("0")
-                Slider(value: $sliderValue, in: 1...100)
-                Text("100")
+                Text("0").modifier(LabelStyle())
+                    .padding(.leading, 30.0)
+                Slider(value: $sliderValue, in: 1...100).accentColor(Color.green)
+                Text("100").modifier(LabelStyle())
+                    .padding(.trailing, 50)
                 
             }
             Spacer()
             
             
             Button(action:
-                    {
-                print("Button Pressed")
+            {
+            
                 alertIsVisible = true
                 
             })
@@ -58,34 +134,45 @@ struct ContentView: View
                     targetValue  = Int.random(in: 1...100) } )
                 
             }
+            .background(Image("Button"), alignment: .center).modifier(ButtonLargeTextStyle())
+            
             Spacer()
             
             HStack
             {
                 
-                Button("Start Over") {
-                    resetGame()
-                }
-                Spacer()
-                Text("Score:")
-                Text("Your score is \(Score)")
-                Spacer()
-                Text("Round:")
-                Text("\(Round)")
-                Spacer()
-                Button("Info") {
-                    /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/ /*@END_MENU_TOKEN@*/
-                }
                 
+                Button(action:
+                {
+                   resetGame()
+                    
+                })
+                {
+                    
+                    HStack
+                    {
+                        Image("StartOverIcon")
+                        Text("Start Over").modifier(ButtonSmallTextStyle())
+                        
+                    }
+                }
+                .background(Image("Button")).modifier(Shadow())
                 
+                Spacer()
+                Text("Score:").modifier(LabelStyle())
+                Text("\(Score)").modifier(ValueStyle())
+                Spacer()
+                Text("Round:").modifier(LabelStyle())
+                Text("\(Round)").modifier(ValueStyle())
+                            
             }.padding(.bottom, 20)
             
             
             
             
         }
-        
-        
+        .background(Image("Background"), alignment: .center)
+    
     }
     
     func amountOff() ->Int
@@ -159,3 +246,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView().previewLayout(PreviewLayout.fixed(width: 896, height: 414))
     }
 }
+
